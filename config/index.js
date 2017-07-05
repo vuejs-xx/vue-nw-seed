@@ -42,15 +42,15 @@ module.exports = {
       // see document: https://github.com/nwjs/nw-builder
       builder: {
         files: [resolve('./dist/**')],
-        // platforms: ['win32', 'osx64'],
-        platforms: ['win32'],
+        // platforms: ['win32', 'win64', 'osx64'],
+        platforms: ['win32', 'win64'],
         version: '0.14.7',
         flavor: 'normal',
         cacheDir: resolve('./node_modules/_nw-builder-cache/'),
         buildDir: resolve('./releases'),
         winIco: resolve('./build/setup_resources/logo.ico'),
         macIcns: resolve('./build/setup_resources/logo.icns'),
-        buildType: function() {
+        buildType: function () {
           return this.appVersion
         }
       },
@@ -61,11 +61,15 @@ module.exports = {
         resourcesPath: resolve('./build/setup_resources'),
         appPublisher: 'vue-nw-seed, Inc.',
         appURL: 'https://github.com/anchengjian/vue-nw-seed',
-        appId: '{{A448363D-3A2F-4800-B62D-8A1C4D8F1115}}'
+        appId: '{{A448363D-3A2F-4800-B62D-8A1C4D8F1115}}',
+        // data: { name, version, platform }
+        outputFileName: function (data) {
+          return data.name + '-' + data.version
+        }
       },
       upgrade: {
         outputFile: resolve('./releases/upgrade.json'),
-        publicPath: 'http://localhost:8080/upgrade/',
+        publicPath: 'http://localhost:8080/releases/',
         files: [curReleasesPath]
       }
     }
@@ -84,7 +88,7 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false,
     upgrade: {
-      publicPath: '/upgrade',
+      publicPath: '/releases',
       directory: 'releases'
     }
   }
